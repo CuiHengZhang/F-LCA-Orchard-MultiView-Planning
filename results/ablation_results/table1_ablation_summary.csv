@@ -1,0 +1,5 @@
+﻿Algorithm,Primary Cost,Total Cost,Total Distance / m,Theoretical Coverage / %,Effective Coverage / %,Obstacle Penalty,Energy Range / %,Runtime / s
+F-LCA,1413.76 ± 72.88,2466.33 ± 328.64,1334.18 ± 59.11,100.00 ± 0.00,100.00 ± 0.00,418.85 ± 192.70,14.27 ± 3.31,86.42 ± 1.23
+F-LCA w/o hetero,1538.17 ± 85.76,2546.52 ± 392.45,1428.43 ± 57.04,100.00 ± 0.00,100.00 ± 0.00,577.61 ± 216.90,12.71 ± 3.92,73.09 ± 1.49
+F-LCA w/o orthogonal observation,930.29 ± 64.04,1561.02 ± 240.03,848.73 ± 45.09,100.00 ± 0.00,25.00 ± 0.00,429.26 ± 184.23,14.54 ± 3.62,49.46 ± 0.58
+F-LCA w/o late-stage cooperative restructuring,1466.86 ± 69.93,2948.72 ± 640.27,1380.56 ± 55.67,100.00 ± 0.00,100.00 ± 0.00,454.20 ± 189.36,18.53 ± 5.83,72.77 ± 1.25

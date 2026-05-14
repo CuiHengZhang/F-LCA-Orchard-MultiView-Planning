@@ -1,0 +1,3 @@
+﻿Comparison,Metric,F-LCA,SISR-VRP,Improvement / %
+F-LCA vs SISR-VRP,Primary Cost,1413.760507,1535.192509,7.91
+F-LCA vs SISR-VRP,Total Distance / m,1334.179003,1487.431399,10.3

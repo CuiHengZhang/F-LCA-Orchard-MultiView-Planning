@@ -1,0 +1,2 @@
+﻿tree_num,width_m,height_m,best_primary_cost,best_reference_total_cost,best_total_distance,theoretical_observation_coverage_percent,effective_observation_coverage_percent,obstacle_penalty,energy_range_percent,incomplete_tree_ratio_percent,runtime_sec,layered_refine_trigger_count,layered_refine_success_count
+43,62.43109863786958,50.45124059449881,559.6872140041678,786.7636777249942,559.6872140041678,100.0,100.0,0.0,14.118995925300515,0.0,45.320388317108154,13,8

@@ -1,0 +1,9 @@
+﻿Metric,Algorithms included,Number of paired instances,Statistic,p-value,Formatted result,Interpretation
+Primary Cost,"F-LCA, SISR-VRP, ACO, GA, PSO",20,78.56,3.5156223172639525e-16,p < 0.001,Significant overall difference among algorithms
+Total Cost,"F-LCA, SISR-VRP, ACO, GA, PSO",20,72.68,6.1647126955497834e-15,p < 0.001,Significant overall difference among algorithms
+Total Distance,"F-LCA, SISR-VRP, ACO, GA, PSO",20,78.56,3.5156223172639525e-16,p < 0.001,Significant overall difference among algorithms
+Obstacle Penalty,"F-LCA, SISR-VRP, ACO, GA, PSO",20,76.52,9.502621203942147e-16,p < 0.001,Significant overall difference among algorithms
+Energy Range,"F-LCA, SISR-VRP, ACO, GA, PSO",20,70.12,2.1412194853399427e-14,p < 0.001,Significant overall difference among algorithms
+Runtime,"F-LCA, SISR-VRP, ACO, GA, PSO",20,73.0,5.275731421673047e-15,p < 0.001,Significant overall difference among algorithms
+Theoretical Coverage,"F-LCA, SISR-VRP, ACO, GA, PSO",20,,,Not tested,All algorithms achieved identical values
+Effective Coverage,"F-LCA, SISR-VRP, ACO, GA, PSO",20,,,Not tested,All algorithms achieved identical values

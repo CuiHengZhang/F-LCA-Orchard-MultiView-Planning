@@ -1,0 +1,4 @@
+﻿Algorithm,Execution Path Length / m,Estimated Execution Time / s,Minimum Obstacle Clearance / m,Minimum Safety Clearance / m,Turn Violation Ratio / %
+F-LCA,1433.84 ± 46.37,2752.30 ± 57.96,0.964 ± 0.120,-0.536 ± 0.120,12.67 ± 2.18
+SISR-VRP,1554.04 ± 94.78,2902.55 ± 118.47,0.983 ± 0.078,-0.517 ± 0.078,11.22 ± 2.15
+ACO,1877.20 ± 148.60,3306.51 ± 185.75,0.854 ± 0.556,-0.646 ± 0.556,10.48 ± 1.56

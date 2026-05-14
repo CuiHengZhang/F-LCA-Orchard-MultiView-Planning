@@ -1,0 +1,5 @@
+﻿Algorithm,Primary Cost Mean,Primary Cost Std,Total Cost Mean,Total Cost Std,Total Distance / m Mean,Total Distance / m Std,Theoretical Coverage / % Mean,Theoretical Coverage / % Std,Effective Coverage / % Mean,Effective Coverage / % Std,Obstacle Penalty Mean,Obstacle Penalty Std,Energy Range / % Mean,Energy Range / % Std,Runtime / s Mean,Runtime / s Std
+F-LCA,1413.760507,72.880717,2466.330846,328.638515,1334.179003,59.112646,100.0,0.0,100.0,0.0,418.85002,192.697565,14.265252,3.311312,86.424694,1.227804
+F-LCA w/o hetero,1538.171325,85.761157,2546.518779,392.446653,1428.425958,57.040976,100.0,0.0,100.0,0.0,577.607197,216.895393,12.70935,3.919791,73.092085,1.491152
+F-LCA w/o orthogonal observation,930.29356,64.039208,1561.021545,240.030673,848.734535,45.092298,100.0,0.0,25.0,0.0,429.258022,184.234215,14.544643,3.621448,49.463614,0.580733
+F-LCA w/o late-stage cooperative restructuring,1466.855185,69.926647,2948.722023,640.273425,1380.556727,55.670602,100.0,0.0,100.0,0.0,454.202412,189.357293,18.527576,5.825601,72.769264,1.248131
