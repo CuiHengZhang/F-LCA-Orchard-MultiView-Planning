@@ -8,13 +8,13 @@ This repository provides the code, data, and result files supporting the manuscr
 
 This study reformulates citrus orchard path planning as a multi-view constrained cooperative routing problem with observation completeness requirements. Each citrus tree is modeled as a multi-view observation unit rather than a single visiting target.
 
-The repository contains seed-level algorithm results, summary tables, ablation data, convergence data, statistical test outputs, execution proxy metrics, processed real-tree-location case data, representative example inputs, and figure source data used in the manuscript.
+The repository contains seed-level algorithm results, summary tables, ablation data, convergence data, statistical test outputs, execution proxy metrics, parameter sensitivity analysis outputs, processed real-tree-location case data, representative example inputs, supplementary materials, and figure source data used in the manuscript.
 
 ## Repository structure
 
-- `code/`: scripts for algorithm execution, evaluation, plotting, and statistical analysis.
+- `code/`: scripts for algorithm execution, evaluation, plotting, statistical analysis, scenario generation, and parameter sensitivity analysis.
 - `data/`: input data, including processed real-tree-location data, example inputs, and notes on seed-based random instance generation.
-- `results/`: seed-level results, summary tables, ablation results, convergence data, statistical tests, and execution proxy metrics.
+- `results/`: seed-level results, summary tables, ablation results, convergence data, execution proxy metrics, statistical tests, and parameter sensitivity analysis outputs.
 - `figures_source_data/`: source data and exported files for main and supplementary figures.
 - `supplementary/`: supplementary files and materials related to the manuscript.
 - `docs/`: additional documentation.
@@ -43,6 +43,9 @@ The folder `data/random_instances/` provides notes on seed-based random orchard 
 | Table S4 | `results/execution_proxy_results/execution_proxy_metrics_summary.csv` |
 | Table S5a | `results/statistical_tests/friedman_results.csv` |
 | Table S5b | `results/statistical_tests/wilcoxon_holm_results.csv` |
+| Fig. S6 | `figures_source_data/supplementary_figures/figS6_parameter_sensitivity/` |
+| Table S8 | `results/parameter_sensitivity/table_S8_parameter_sensitivity.csv` |
+| Parameter sensitivity analysis | `results/parameter_sensitivity/` and `code/sensitivity_analysis/` |
 | Table S6 | `data/real_tree_locations/real_orchard_case_metrics.csv` |
 | Fig. 4 | `figures_source_data/fig4_seed44_path/` |
 | Fig. 5 | `data/real_tree_locations/` and `figures_source_data/fig5_real_case/` |
@@ -51,13 +54,39 @@ The folder `data/random_instances/` provides notes on seed-based random orchard 
 ## Code organization
 
 - `code/evaluation/`: main experimental scripts, summary-generation scripts, and execution-proxy post-processing scripts.
-- `code/plotting/`: plotting scripts for convergence curves and real-orchard case visualization.
+- `code/plotting/`: plotting scripts for convergence curves, representative path visualization, and real-orchard case visualization.
 - `code/statistics/`: scripts for Friedman and Wilcoxon-Holm statistical tests.
 - `code/scenario_generation/`: optional utilities for generating or documenting scenario inputs.
+- `code/sensitivity_analysis/`: release scripts for reproducing the F-LCA parameter sensitivity analysis.
+
+## Results organization
+
+- `results/seed_results/`: seed-level results for F-LCA, SISR-VRP, ACO, GA, and PSO.
+- `results/summary_tables/`: manuscript-ready summary tables and headline improvement calculations.
+- `results/ablation_results/`: seed-level and summary results for F-LCA ablation variants.
+- `results/convergence_results/`: convergence summary data for iterative algorithms.
+- `results/execution_proxy_results/`: execution-oriented proxy evaluation results under a unified post-processing protocol.
+- `results/statistical_tests/`: Friedman and Wilcoxon-Holm statistical test outputs.
+- `results/parameter_sensitivity/`: cleaned results and source tables for the F-LCA parameter sensitivity analysis.
+
+## Figure source data organization
+
+- `figures_source_data/fig3_main_comparison/`: source data and exported panels for the main algorithm comparison figure.
+- `figures_source_data/fig4_seed44_path/`: source files for the representative seed-44 cooperative path visualization.
+- `figures_source_data/fig5_real_case/`: source files and exported figures for the real-tree-location planning case.
+- `figures_source_data/final_manuscript_figures/`: final exported versions of the main manuscript figures.
+- `figures_source_data/supplementary_figures/`: exported supplementary figures and corresponding source files.
+- `figures_source_data/supplementary_figures/figS6_parameter_sensitivity/`: exported panels and source data for Supplementary Fig. S6.
 
 ## Notes on statistical tests
 
 The file `wilcoxon_holm_results.csv` provides the full pairwise Wilcoxon-Holm results, including Total Cost. Supplementary Table S5b reports the main pairwise metrics discussed in the manuscript.
+
+## Notes on parameter sensitivity analysis
+
+The parameter sensitivity analysis evaluates F-LCA under single-factor parameter perturbations. For each tested parameter, only one parameter is changed at a time while the remaining parameters are kept at their baseline settings. The same 20 matched random instances used in the main experiment are used for evaluation.
+
+The cleaned result files retain the metrics used in the manuscript, Supplementary Fig. S6, and Supplementary Table S8. Auxiliary logging columns not used for analysis were removed for clarity. The original raw outputs are retained locally by the authors for traceability.
 
 ## Notes on real-tree-location data
 
