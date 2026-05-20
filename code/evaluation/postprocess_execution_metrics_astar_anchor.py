@@ -10,12 +10,17 @@ import matplotlib.pyplot as plt
 
 
 # =========================
-# 用户可调参数
+# Repository paths and user-adjustable parameters
 # =========================
-SCENE_JSON = "aco_seed44_export/scene_seed44.json"
-FLCA_JSON = "flca_seed44_export/best_path_seed44.json"
-ACO_JSON = "aco_seed44_export/best_path_seed44_aco.json"
-OUT_DIR = "execution_postprocess_seed44_astar_anchor"
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+DATA_DIR = PROJECT_ROOT / "data"
+OUTPUTS_DIR = PROJECT_ROOT / "outputs"
+
+SCENE_JSON = DATA_DIR / "example_inputs" / "scene_seed44.json"
+FLCA_JSON = DATA_DIR / "example_inputs" / "best_path_seed44.json"
+# Optional: provide this file if an ACO seed-44 path needs to be post-processed by main().
+ACO_JSON = DATA_DIR / "example_inputs" / "best_path_seed44_aco.json"
+OUT_DIR = OUTPUTS_DIR / "execution_postprocess_seed44_astar_anchor"
 
 GRID_RES = 0.5               # 栅格分辨率（m）
 VEHICLE_RADIUS = 0.6         # 车体等效半径（m）
@@ -498,8 +503,6 @@ def main():
 
     scene = load_json(SCENE_JSON)
     flca_json = load_json(FLCA_JSON)
-    aco_json = load_json(ACO_JSON)
-
     # F-LCA
     flca_bundle, flca_df = process_algorithm(scene, flca_json, "F-LCA")
     save_json(out_dir / "f_lca_execution_metrics_astar_anchor.json", flca_bundle["summary"])
@@ -510,18 +513,23 @@ def main():
         f"F-LCA Execution-oriented Post-processing with Anchor-preserving A* (seed={flca_json['seed']})"
     )
 
-    # ACO
-    aco_bundle, aco_df = process_algorithm(scene, aco_json, "ACO")
-    save_json(out_dir / "aco_execution_metrics_astar_anchor.json", aco_bundle["summary"])
-    aco_df.to_csv(out_dir / "aco_vehicle_metrics_astar_anchor.csv", index=False, encoding="utf-8-sig")
-    plot_algorithm(
-        scene, aco_bundle,
-        str(out_dir / "aco_execution_plot_astar_anchor.png"),
-        f"ACO Execution-oriented Post-processing with Anchor-preserving A* (seed={aco_json['seed']})"
-    )
+    # ACO is optional here because the 20-seed execution scripts generate ACO paths in memory.
+    summary_rows = [flca_bundle["summary"]]
+    if Path(ACO_JSON).exists():
+        aco_json = load_json(ACO_JSON)
+        aco_bundle, aco_df = process_algorithm(scene, aco_json, "ACO")
+        save_json(out_dir / "aco_execution_metrics_astar_anchor.json", aco_bundle["summary"])
+        aco_df.to_csv(out_dir / "aco_vehicle_metrics_astar_anchor.csv", index=False, encoding="utf-8-sig")
+        plot_algorithm(
+            scene, aco_bundle,
+            str(out_dir / "aco_execution_plot_astar_anchor.png"),
+            f"ACO Execution-oriented Post-processing with Anchor-preserving A* (seed={aco_json['seed']})"
+        )
+        summary_rows.append(aco_bundle["summary"])
+    else:
+        print(f"[Info] Optional ACO path file not found, skipping ACO seed-44 demo: {ACO_JSON}")
 
     # 汇总表
-    summary_rows = [flca_bundle["summary"], aco_bundle["summary"]]
     summary_df = pd.DataFrame(summary_rows)
     summary_df.to_csv(out_dir / "execution_comparison_summary_astar_anchor.csv",
                       index=False, encoding="utf-8-sig")

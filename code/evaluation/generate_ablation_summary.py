@@ -2,7 +2,7 @@ from pathlib import Path
 import pandas as pd
 
 
-ROOT = Path(r"D:\F-LCA-Orchard-MultiView-Planning")
+ROOT = Path(__file__).resolve().parents[2]
 
 ABLATION_DIR = ROOT / "results" / "ablation_results"
 OUT_DIR = ABLATION_DIR

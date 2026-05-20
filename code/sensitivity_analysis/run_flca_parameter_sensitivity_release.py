@@ -1,9 +1,25 @@
 import csv
-import os
 import statistics
+import sys
 import time
 from copy import deepcopy
+from pathlib import Path
 from typing import Dict, Any, List, Tuple
+
+
+def find_project_root() -> Path:
+    current = Path(__file__).resolve()
+    for parent in [current.parent, *current.parents]:
+        if (parent / "code").exists() and (parent / "results").exists():
+            return parent
+    raise RuntimeError("Could not locate the project root. Please run this script inside the repository.")
+
+
+PROJECT_ROOT = find_project_root()
+EVALUATION_DIR = PROJECT_ROOT / "code" / "evaluation"
+
+if str(EVALUATION_DIR) not in sys.path:
+    sys.path.insert(0, str(EVALUATION_DIR))
 
 import F_LCA_tiered_refinement_pathboost as flca
 
@@ -31,9 +47,14 @@ SEEDS = list(range(42, 62))
 MULTIPLIERS = [0.8, 0.9, 1.0, 1.1, 1.2]
 PARAMETER_NAMES = ["lambda_o", "partition_battery_power", "lambda_b", "lambda_c"]
 
-OUT_DIR = "parameter_sensitivity_release"
-SEED_CSV = os.path.join(OUT_DIR, "flca_parameter_sensitivity_seed_results_clean.csv")
-SUMMARY_CSV = os.path.join(OUT_DIR, "flca_parameter_sensitivity_summary_clean.csv")
+# Rerun outputs are written to outputs/ to avoid overwriting the curated
+# manuscript-ready files in results/parameter_sensitivity/.
+OUT_DIR = PROJECT_ROOT / "outputs" / "parameter_sensitivity_release"
+SEED_CSV = OUT_DIR / "flca_parameter_sensitivity_seed_results_clean.csv"
+SUMMARY_CSV = OUT_DIR / "flca_parameter_sensitivity_summary_clean.csv"
+
+# Curated data used in the manuscript are stored here.
+CURATED_RESULTS_DIR = PROJECT_ROOT / "results" / "parameter_sensitivity"
 
 
 def build_sensitivity_settings() -> List[Tuple[str, float]]:
@@ -112,21 +133,21 @@ def run_one_case(seed: int, param_name: str, multiplier: float) -> Dict[str, Any
     }
 
 
-def write_csv(path: str, rows: List[Dict[str, Any]]) -> None:
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+def write_csv(path: Path, rows: List[Dict[str, Any]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
     if not rows:
         return
     keys = list(rows[0].keys())
-    with open(path, "w", newline="", encoding="utf-8-sig") as f:
+    with path.open("w", newline="", encoding="utf-8-sig") as f:
         writer = csv.DictWriter(f, fieldnames=keys)
         writer.writeheader()
         writer.writerows(rows)
 
 
-def read_existing_rows(path: str) -> List[Dict[str, Any]]:
-    if not os.path.exists(path):
+def read_existing_rows(path: Path) -> List[Dict[str, Any]]:
+    if not path.exists():
         return []
-    with open(path, "r", newline="", encoding="utf-8-sig") as f:
+    with path.open("r", newline="", encoding="utf-8-sig") as f:
         return list(csv.DictReader(f))
 
 
@@ -214,7 +235,7 @@ def aggregate_summary(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
 
 
 def main():
-    os.makedirs(OUT_DIR, exist_ok=True)
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
 
     rows = normalize_rows(read_existing_rows(SEED_CSV))
     done = completed_keys(rows)
@@ -230,6 +251,9 @@ def main():
     ]
 
     print("===== F-LCA parameter sensitivity release run =====")
+    print(f"Project root: {PROJECT_ROOT}")
+    print(f"Curated manuscript-ready results: {CURATED_RESULTS_DIR}")
+    print(f"Rerun outputs: {OUT_DIR}")
     print(f"Expected total runs: {total_runs}")
     print(f"Completed runs already found: {len(done)}")
     print(f"Remaining runs: {len(remaining)}")

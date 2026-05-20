@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-Draw Fig. 5 for the real-orchard F-LCA case from JSON/CSV data.
-Put this script in the same folder as:
-    real_orchard_input.json
-    real_orchard_best_path.json
-    real_citrus_tree_points_xy.csv
-Then run:
-    python draw_real_orchard_fig5_local.py
-Outputs will be saved to:
-    fig5_python_redraw_output/
+Draw Fig. 5 for the real-orchard F-LCA case.
+
+Expected repository layout:
+    data/real_tree_locations/real_orchard_input.json
+    data/real_tree_locations/real_orchard_best_path.json
+    data/real_tree_locations/real_citrus_tree_points_xy.csv
+
+Outputs:
+    figures_source_data/fig5_real_case/real_orchard_fig5_two_panel.*
+    figures_source_data/fig5_real_case/real_orchard_fig5_single_panel.*
 """
 
 import json
@@ -16,37 +17,56 @@ from pathlib import Path
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
 from matplotlib.gridspec import GridSpec
+from matplotlib.lines import Line2D
 import pandas as pd
 
-# Use the folder where this script is located.
-BASE = Path(__file__).resolve().parent
-OUT_DIR = BASE / "fig5_python_redraw_output"
-OUT_DIR.mkdir(exist_ok=True)
 
-INPUT_JSON = BASE / "real_orchard_input.json"
-PATH_JSON = BASE / "real_orchard_best_path.json"
-TREE_CSV = BASE / "real_citrus_tree_points_xy.csv"
+def find_project_root() -> Path:
+    """Return repository root by searching upward for data/, results/, and code/."""
+    current = Path(__file__).resolve()
+    for parent in [current.parent, *current.parents]:
+        if (parent / "data").exists() and (parent / "results").exists():
+            return parent
+    return current.parents[2]
 
-with INPUT_JSON.open("r", encoding="utf-8") as f:
+
+PROJECT_ROOT = find_project_root()
+DATA_DIR = PROJECT_ROOT / "data"
+FIGURES_DIR = PROJECT_ROOT / "figures_source_data"
+
+REAL_DIR = DATA_DIR / "real_tree_locations"
+OUT_DIR = FIGURES_DIR / "fig5_real_case"
+OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+INPUT_JSON = REAL_DIR / "real_orchard_input.json"
+PATH_JSON = REAL_DIR / "real_orchard_best_path.json"
+TREE_CSV = REAL_DIR / "real_citrus_tree_points_xy.csv"
+
+
+def require_file(path: Path) -> Path:
+    if not path.exists():
+        raise FileNotFoundError(f"Required file not found: {path}")
+    return path
+
+
+with require_file(INPUT_JSON).open("r", encoding="utf-8") as f:
     scene = json.load(f)
-with PATH_JSON.open("r", encoding="utf-8") as f:
+with require_file(PATH_JSON).open("r", encoding="utf-8") as f:
     result = json.load(f)
 
-tree_df = pd.read_csv(TREE_CSV, encoding="utf-8-sig")
+tree_df = pd.read_csv(require_file(TREE_CSV), encoding="utf-8-sig")
 
 width = float(scene["width_m"])
 height = float(scene["height_m"])
 starts = {int(k): tuple(v) for k, v in result["start_positions"].items()}
 paths = {int(k): [tuple(p) for p in v] for k, v in result["vehicle_paths"].items()}
 
-# Low-saturation path colors. Keep the whole figure close to a gray academic style.
 COLORS = {
-    0: "#4C78A8",  # muted blue
-    1: "#B07A3A",  # muted brown-orange
-    2: "#5A8A5E",  # muted green
-    3: "#8B6A9E",  # muted purple
+    0: "#4C78A8",
+    1: "#B07A3A",
+    2: "#5A8A5E",
+    3: "#8B6A9E",
 }
 LINESTYLES = {0: "-", 1: "-", 2: "-", 3: "-"}
 
@@ -68,34 +88,32 @@ def build_legend_handles():
             [0], [0], marker="o", color="none",
             markerfacecolor="#D9D9D9", markeredgecolor="#222222",
             markeredgewidth=0.55, markersize=6.2,
-            label="Real tree locations"
+            label="Real tree locations",
         ),
         Line2D(
             [0], [0], marker="s", color="none",
             markerfacecolor="white", markeredgecolor="#111111",
             markeredgewidth=0.75, markersize=6.0,
-            label="UGV start positions"
+            label="UGV start positions",
         ),
     ]
     for vid in sorted(paths):
         handles.append(
             Line2D(
                 [0], [0], color=COLORS.get(vid, "#555555"), lw=2.1,
-                linestyle=LINESTYLES.get(vid, "-"), label=f"UGV {vid + 1}"
+                linestyle=LINESTYLES.get(vid, "-"), label=f"UGV {vid + 1}",
             )
         )
     return handles
 
 
 def draw_orchard(ax):
-    # Tree locations.
     ax.scatter(
         tree_df["x_m"], tree_df["y_m"],
         s=34, facecolors="#D9D9D9", edgecolors="#222222",
-        linewidths=0.52, zorder=4
+        linewidths=0.52, zorder=4,
     )
 
-    # Start-position label offsets.
     label_pos = {
         0: (starts[0][0] + 0.65, starts[0][1] + 0.75, "left", "bottom"),
         1: (starts[1][0] + 0.55, starts[1][1] + 0.75, "left", "bottom"),
@@ -103,7 +121,6 @@ def draw_orchard(ax):
         3: (starts[3][0] + 0.55, starts[3][1] + 0.65, "left", "bottom"),
     }
 
-    # Vehicle paths.
     for vid in sorted(paths):
         start = starts[vid]
         path = paths[vid]
@@ -115,21 +132,21 @@ def draw_orchard(ax):
         ax.plot(
             xs, ys, color=color, linewidth=1.72,
             linestyle=LINESTYLES.get(vid, "-"), alpha=0.95,
-            solid_capstyle="round", solid_joinstyle="round", zorder=2
+            solid_capstyle="round", solid_joinstyle="round", zorder=2,
         )
         ax.plot(
             xs[1:], ys[1:], linestyle="None", marker="o", markersize=2.55,
-            markerfacecolor=color, markeredgecolor=color, alpha=0.95, zorder=5
+            markerfacecolor=color, markeredgecolor=color, alpha=0.95, zorder=5,
         )
         ax.scatter(
             [start[0]], [start[1]], marker="s", s=50,
-            facecolor=color, edgecolor="#111111", linewidth=0.72, zorder=6
+            facecolor=color, edgecolor="#111111", linewidth=0.72, zorder=6,
         )
         if vid in label_pos:
             x, y, ha, va = label_pos[vid]
             ax.text(
                 x, y, f"S{vid + 1}", fontsize=8.0, fontweight="bold",
-                color=color, ha=ha, va=va, zorder=7
+                color=color, ha=ha, va=va, zorder=7,
             )
 
     ax.set_aspect("equal", adjustable="box")
@@ -147,12 +164,11 @@ def save_all(fig, stem):
     fig.savefig(
         OUT_DIR / f"{stem}.tif",
         bbox_inches="tight",
-        pil_kwargs={"compression": "tiff_lzw"}
+        pil_kwargs={"compression": "tiff_lzw"},
     )
 
 
 def main():
-    # Version A: two-panel version, matching manuscript caption: (a) path, (b) legend.
     fig = plt.figure(figsize=(8.2, 5.2), constrained_layout=False)
     gs = GridSpec(1, 2, figure=fig, width_ratios=[4.8, 1.2], wspace=0.10)
     ax = fig.add_subplot(gs[0, 0])
@@ -167,19 +183,18 @@ def main():
                    ha="left", va="bottom", fontsize=9.5, fontweight="bold", clip_on=False)
     ax_legend.legend(
         handles=build_legend_handles(), loc="center left", frameon=False,
-        handlelength=2.25, labelspacing=0.95, borderaxespad=0
+        handlelength=2.25, labelspacing=0.95, borderaxespad=0,
     )
     fig.subplots_adjust(left=0.07, right=0.985, bottom=0.10, top=0.965, wspace=0.10)
     save_all(fig, "real_orchard_fig5_two_panel")
     plt.close(fig)
 
-    # Version B: single-panel version with legend above the plot.
     fig, ax = plt.subplots(figsize=(7.2, 5.35))
     draw_orchard(ax)
     ax.legend(
         handles=build_legend_handles(), loc="upper center", bbox_to_anchor=(0.5, 1.16),
         ncol=3, frameon=True, framealpha=0.96, borderpad=0.42,
-        handlelength=2.7, columnspacing=1.1
+        handlelength=2.7, columnspacing=1.1,
     )
     fig.subplots_adjust(left=0.08, right=0.99, bottom=0.10, top=0.83)
     save_all(fig, "real_orchard_fig5_single_panel")

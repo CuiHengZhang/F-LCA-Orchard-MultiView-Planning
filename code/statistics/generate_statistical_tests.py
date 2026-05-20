@@ -4,7 +4,7 @@ import numpy as np
 from scipy.stats import friedmanchisquare, wilcoxon
 
 
-ROOT = Path(r"D:\F-LCA-Orchard-MultiView-Planning")
+ROOT = Path(__file__).resolve().parents[2]
 
 SEED_DIR = ROOT / "results" / "seed_results"
 OUT_DIR = ROOT / "results" / "statistical_tests"

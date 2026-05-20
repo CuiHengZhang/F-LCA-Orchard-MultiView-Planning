@@ -1,6 +1,7 @@
 import csv
 import math
 import os
+from pathlib import Path
 import random
 import statistics
 import time
@@ -14,6 +15,21 @@ import F_LCA_tiered_refinement_pathboost as flca
 
 
 SEEDS = [42 + i for i in range(20)]
+
+# Repository-aware output handling.
+# The script files live in: <repo>/code/evaluation/
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+OUTPUTS_DIR = PROJECT_ROOT / "outputs"
+FAIR_BUDGET_OUTPUT_DIR = OUTPUTS_DIR / "fair_budget_runs"
+
+
+def resolve_output_path(path):
+    """Resolve relative output paths under <repo>/outputs/fair_budget_runs/."""
+    p = Path(path)
+    if p.is_absolute():
+        return p
+    return FAIR_BUDGET_OUTPUT_DIR / p
+
 
 
 class ExperimentProblem:
@@ -197,11 +213,12 @@ def aggregate_rows(rows: List[Dict[str, Any]], group_key: str = "algorithm") -> 
 
 
 def write_csv(path: str, rows: List[Dict[str, Any]]):
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+    path = resolve_output_path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
     if not rows:
         return
     keys = list(rows[0].keys())
-    with open(path, "w", newline="", encoding="utf-8-sig") as f:
+    with path.open("w", newline="", encoding="utf-8-sig") as f:
         writer = csv.DictWriter(f, fieldnames=keys)
         writer.writeheader()
         writer.writerows(rows)
@@ -242,8 +259,9 @@ def aggregate_history_rows(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
 
 
 def save_results_bundle(out_dir: str, rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    seed_csv = os.path.join(out_dir, "seed_results.csv")
-    summary_csv = os.path.join(out_dir, "summary.csv")
+    out_dir = resolve_output_path(out_dir)
+    seed_csv = out_dir / "seed_results.csv"
+    summary_csv = out_dir / "summary.csv"
     write_csv(seed_csv, rows)
     summary = aggregate_rows(rows)
     write_csv(summary_csv, summary)
@@ -251,8 +269,9 @@ def save_results_bundle(out_dir: str, rows: List[Dict[str, Any]]) -> List[Dict[s
 
 
 def save_convergence_bundle(out_dir: str, rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    seed_csv = os.path.join(out_dir, "convergence_seed.csv")
-    summary_csv = os.path.join(out_dir, "convergence_summary.csv")
+    out_dir = resolve_output_path(out_dir)
+    seed_csv = out_dir / "convergence_seed.csv"
+    summary_csv = out_dir / "convergence_summary.csv"
     write_csv(seed_csv, rows)
     summary = aggregate_history_rows(rows)
     write_csv(summary_csv, summary)
@@ -603,4 +622,5 @@ def print_brief(rows: List[Dict[str, Any]]):
 
 
 def print_saved_paths(out_dir: str):
-    print(f"\nSaved to:\n  {out_dir}/seed_results.csv\n  {out_dir}/summary.csv")
+    out_dir = resolve_output_path(out_dir)
+    print(f"\nSaved to:\n  {out_dir / 'seed_results.csv'}\n  {out_dir / 'summary.csv'}")

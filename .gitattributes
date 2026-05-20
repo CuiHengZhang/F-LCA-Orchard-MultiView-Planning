@@ -1,2 +1,28 @@
-# Auto detect text files and perform LF normalization
+# Normalize text files
 * text=auto
+
+# Source code and text data
+*.py text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.json text eol=lf
+*.csv text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Windows scripts
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.tif binary
+*.tiff binary
+*.svg text eol=lf
+*.pdf binary
+*.docx binary
+*.xlsx binary
+*.zip binary

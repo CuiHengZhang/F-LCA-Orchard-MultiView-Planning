@@ -17,6 +17,7 @@ Place this file in the same directory as:
 import os
 import statistics
 import time
+from pathlib import Path
 from copy import deepcopy
 from typing import Any, Dict, List, Tuple
 
@@ -34,7 +35,8 @@ from exp_suite_common_fair_budget_with_sisr import (
 from postprocess_execution_metrics_astar_anchor import process_algorithm
 
 
-OUT_DIR = "sisr_execution_postprocess_20seed_astar_anchor"
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+OUT_DIR = PROJECT_ROOT / "outputs" / "sisr_execution_postprocess_20seed_astar_anchor"
 MAX_RUNS = len(SEEDS)  # 可先改成 3 或 5 试跑
 
 
@@ -215,7 +217,7 @@ def aggregate_exec_rows(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
 
 
 def main():
-    os.makedirs(OUT_DIR, exist_ok=True)
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
     seed_rows: List[Dict[str, Any]] = []
     vehicle_rows: List[pd.DataFrame] = []
     main_metric_rows: List[Dict[str, Any]] = []
@@ -245,20 +247,20 @@ def main():
         )
 
     seed_df = pd.DataFrame(seed_rows)
-    seed_csv = os.path.join(OUT_DIR, "sisr_execution_seed_results_20seed_astar_anchor.csv")
+    seed_csv = OUT_DIR / "sisr_execution_seed_results_20seed_astar_anchor.csv"
     seed_df.to_csv(seed_csv, index=False, encoding="utf-8-sig")
 
     vehicle_df_all = pd.concat(vehicle_rows, ignore_index=True) if vehicle_rows else pd.DataFrame()
-    vehicle_csv = os.path.join(OUT_DIR, "sisr_execution_vehicle_results_20seed_astar_anchor.csv")
+    vehicle_csv = OUT_DIR / "sisr_execution_vehicle_results_20seed_astar_anchor.csv"
     vehicle_df_all.to_csv(vehicle_csv, index=False, encoding="utf-8-sig")
 
     summary_rows = aggregate_exec_rows(seed_rows)
     summary_df = pd.DataFrame(summary_rows)
-    summary_csv = os.path.join(OUT_DIR, "sisr_execution_summary_20seed_astar_anchor.csv")
+    summary_csv = OUT_DIR / "sisr_execution_summary_20seed_astar_anchor.csv"
     summary_df.to_csv(summary_csv, index=False, encoding="utf-8-sig")
 
     main_metric_df = pd.DataFrame(main_metric_rows)
-    main_metric_csv = os.path.join(OUT_DIR, "sisr_main_metric_check_20seed.csv")
+    main_metric_csv = OUT_DIR / "sisr_main_metric_check_20seed.csv"
     main_metric_df.to_csv(main_metric_csv, index=False, encoding="utf-8-sig")
 
     print("\n===== SISR-VRP execution summary =====")

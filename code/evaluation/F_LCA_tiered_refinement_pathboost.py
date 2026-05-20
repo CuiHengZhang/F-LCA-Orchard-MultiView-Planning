@@ -2,6 +2,7 @@
 import csv
 import math
 import os
+from pathlib import Path
 import random
 import time
 from copy import deepcopy
@@ -9,6 +10,10 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Tuple, Optional
 
 import numpy as np
+
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+OUTPUTS_DIR = PROJECT_ROOT / "outputs"
 
 
 def clip(value: float, low: float, high: float) -> float:
@@ -1728,11 +1733,11 @@ def main():
     solver = FusionLeafcutterAntAlgorithm(env=env, cfg=alg_cfg)
     result = solver.run()
 
-    out_dir = "flca_tiered_refinement_data"
-    os.makedirs(out_dir, exist_ok=True)
+    out_dir = OUTPUTS_DIR / "flca_tiered_refinement_data"
+    out_dir.mkdir(parents=True, exist_ok=True)
 
     if result.report_rows:
-        with open(os.path.join(out_dir, "report.csv"), "w", newline="", encoding="utf-8-sig") as f:
+        with (out_dir / "report.csv").open("w", newline="", encoding="utf-8-sig") as f:
             writer = csv.DictWriter(f, fieldnames=result.report_rows[0].keys())
             writer.writeheader()
             writer.writerows(result.report_rows)
