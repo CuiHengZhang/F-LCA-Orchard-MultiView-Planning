@@ -154,7 +154,7 @@ All code, processed input data, seed-level results, summary tables, statistical-
 
 A permanent archival record is provided through Zenodo.
 
-Zenodo DOI: `10.5281/zenodo.20307621`
+Zenodo DOI: `10.5281/zenodo.20307622`
 
 ## Citation
 
@@ -165,8 +165,8 @@ If you use this repository, please cite the associated manuscript and the archiv
   title  = {F-LCA Orchard Multi-View Path Planning},
   author = {Cui, Hengzhang and Jiang, Rui},
   year   = {2026},
-  doi    = {10.5281/zenodo.20307621},
-  url    = {https://doi.org/10.5281/zenodo.20307621}
+  doi    = {10.5281/zenodo.20307622},
+  url    = {https://doi.org/10.5281/zenodo.20307622}
 }
 ```
 
@@ -175,3 +175,4 @@ If you use this repository, please cite the associated manuscript and the archiv
 Unless otherwise stated, the code in this repository is released under the MIT License, and the data, figures, and documentation are released under the Creative Commons Attribution 4.0 International (CC BY 4.0) License.
 
 If a different license is required by the authors, institution, or target journal, this section should be updated before public release.
+
