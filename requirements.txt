@@ -1,0 +1,11 @@
+# Python dependencies for the F-LCA orchard multi-view path-planning repository
+# Tested with Python 3.10+ / 3.11 recommended
+
+numpy>=1.24
+pandas>=2.0
+matplotlib>=3.7
+scipy>=1.10
+
+# Optional but useful for reading/writing tabular files and image outputs
+openpyxl>=3.1
+Pillow>=10.0
