@@ -19,7 +19,7 @@ The cleaned results used in the manuscript and supplementary material are stored
 
 Supplementary Fig. S6 figure files and source data are also available under:
 
-- `figures_source_data/supplementary_figures/figS6_parameter_sensitivity/`
+- `results/parameter_sensitivity/`
 
 ## Rerun output location
 

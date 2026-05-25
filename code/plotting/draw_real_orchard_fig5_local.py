@@ -8,8 +8,8 @@ Expected repository layout:
     data/real_tree_locations/real_citrus_tree_points_xy.csv
 
 Outputs:
-    figures_source_data/fig5_real_case/real_orchard_fig5_two_panel.*
-    figures_source_data/fig5_real_case/real_orchard_fig5_single_panel.*
+    results/generated_figures/fig5_real_case/real_orchard_fig5_two_panel.*
+    results/generated_figures/fig5_real_case/real_orchard_fig5_single_panel.*
 """
 
 import json
@@ -33,7 +33,7 @@ def find_project_root() -> Path:
 
 PROJECT_ROOT = find_project_root()
 DATA_DIR = PROJECT_ROOT / "data"
-FIGURES_DIR = PROJECT_ROOT / "figures_source_data"
+FIGURES_DIR = PROJECT_ROOT / "results" / "generated_figures"
 
 REAL_DIR = DATA_DIR / "real_tree_locations"
 OUT_DIR = FIGURES_DIR / "fig5_real_case"

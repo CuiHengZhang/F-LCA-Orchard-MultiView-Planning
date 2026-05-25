@@ -7,8 +7,8 @@ Input priority:
    Expected columns: algorithm, iter, best_primary_cost_mean, best_primary_cost_std
 
 Output:
-    figures_source_data/supplementary_figures/convergence_all_algorithms_final.*
-    figures_source_data/supplementary_figures/convergence_flca_vs_aco_final.*
+    results/generated_figures/supplementary_figures/convergence_all_algorithms_final.*
+    results/generated_figures/supplementary_figures/convergence_flca_vs_aco_final.*
 """
 
 from pathlib import Path
@@ -27,7 +27,7 @@ def find_project_root() -> Path:
 
 PROJECT_ROOT = find_project_root()
 RESULTS_DIR = PROJECT_ROOT / "results"
-FIGURES_DIR = PROJECT_ROOT / "figures_source_data"
+FIGURES_DIR = PROJECT_ROOT / "results" / "generated_figures"
 
 INPUT_CSV = RESULTS_DIR / "convergence_results" / "main_convergence_summary_1500iters.csv"
 OUT_DIR = FIGURES_DIR / "supplementary_figures"
