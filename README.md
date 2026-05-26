@@ -2,7 +2,7 @@
 
 This repository provides the code, processed input data, result files, and supplementary materials supporting the manuscript:
 
-**Multi-UGV Cooperative Multi-View Observation Path Planning for Citrus Orchard Phenotypic Data Acquisition**
+**Observation-complete cooperative multi-view path planning for multi-UGV citrus orchard phenotyping**
 
 ## Overview
 
@@ -56,7 +56,8 @@ The main dependencies include:
 |---|---|
 | Main algorithm comparison results | `results/summary_tables/main_comparison_summary_numeric.csv` |
 | Headline improvements in Abstract | `results/summary_tables/headline_improvements.csv` |
-| Table 1 | `results/ablation_results/table1_ablation_summary.csv` |
+| Table 1 | `results/summary_tables/main_comparison_summary_numeric.csv` |
+| Table 2 | `results/ablation_results/table1_ablation_summary.csv` |
 | Table S4 | `results/execution_proxy_results/execution_proxy_metrics_summary.csv` |
 | Table S5a | `results/statistical_tests/friedman_results.csv` |
 | Table S5b | `results/statistical_tests/wilcoxon_holm_results.csv` |
@@ -142,7 +143,9 @@ All code, processed input data, seed-level results, summary tables, statistical-
 
 A permanent archival record is provided through Zenodo.
 
-Zenodo DOI: `10.5281/zenodo.20307623`
+Zenodo DOI: `10.5281/zenodo.20372354`
+
+Repository record: https://doi.org/10.5281/zenodo.20372354
 
 ## Citation
 
@@ -153,8 +156,8 @@ If you use this repository, please cite the associated manuscript and the archiv
   title  = {F-LCA Orchard Multi-View Path Planning},
   author = {Cui, Hengzhang and Jiang, Rui},
   year   = {2026},
-  doi    = {10.5281/zenodo.20307623},
-  url    = {https://doi.org/10.5281/zenodo.20307623}
+  doi    = {10.5281/zenodo.20372354},
+  url    = {https://doi.org/10.5281/zenodo.20372354}
 }
 ```
 
